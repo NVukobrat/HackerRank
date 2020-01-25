@@ -19,9 +19,7 @@ def countTriplets(arr, r):
 
     # Set elements after
     for i in range(2, len(arr)):
-        if arr[i] not in after:
-            after[arr[i]] = 0
-        after[arr[i]] += 1
+        after[arr[i]] = after.get(arr[i], 0) + 1
 
     for i in range(1, len(arr) - 1):
         # Count triplets if satisfy geometrical progression
@@ -29,9 +27,7 @@ def countTriplets(arr, r):
             triplet_count += before[arr[i] / r] * after[arr[i] * r]
 
         # Populate elements before
-        if arr[i] not in before:
-            before[arr[i]] = 0
-        before[arr[i]] += 1
+        before[arr[i]] = before.get(arr[i], 0) + 1
 
         # Neglect utilize elements
         after[arr[i + 1]] -= 1
