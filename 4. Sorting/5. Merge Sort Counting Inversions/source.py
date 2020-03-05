@@ -9,40 +9,49 @@ import sys
 
 # Complete the countInversions function below.
 def countInversions(arr):
-    merge_sort(arr, list(), 0, len(arr) - 1)
+    swap_num = merge(arr, 0)
 
-    return 0
+    return swap_num
 
 
-def merge_sort(array, temp, left_start, right_end):
-    if left_start >= right_end:
+def merge(arr, swap_num):
+    # print("Splitting", arr)
+    # Exit case
+    if len(arr) < 2:
         return
-    middle = (left_start + right_end) // 2
-    merge_sort(array, temp, left_start, middle)
-    merge_sort(array, temp, middle + 1, right_end)
-    merge_halves(array, temp, left_start, right_end)
 
+    # Split halves
+    middle = len(arr) // 2
+    left_half = arr[:middle]
+    right_half = arr[middle:]
 
-def merge_halves(array, temp, left_start, right_end):
-    left_end = (right_end + left_start) // 2
-    right_start = left_end + 1
+    # Recursion calls
+    merge(left_half, swap_num)
+    merge(right_half, swap_num)
 
-    left = left_start
-    right = right_start
-
-    while (left <= left_end) and (right <= right_end):
-        if array[left] <= array[right]:
-            temp.append(array[left])
+    # Sort halves
+    index = left = right = 0
+    while left < len(left_half) and right < len(right_half):
+        if left_half[left] < right_half[right]:
+            arr[index] = left_half[left]
             left += 1
-        else:
-            temp.append(array[right])
+        elif left_half[left] > right_half[right]:
+            arr[index] = right_half[right]
             right += 1
+        index += 1
 
-    temp.extend(array[left:left_end + 1])
-    temp.extend(array[right:right_end + 1])
+    # Populate rest
+    while left < len(left_half):
+        arr[index] = left_half[left]
+        left += 1
+        index += 1
+    while right < len(right_half):
+        arr[index] = right_half[right]
+        right += 1
+        index += 1
 
-    array.clear()
-    array.extend(temp)
+    # print("Merging ", arr)
+    return swap_num
 
 
 if __name__ == '__main__':
