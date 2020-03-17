@@ -6,10 +6,15 @@ import random
 import re
 import sys
 
+
 # Complete the substrCount function below.
 def substrCount(n, s):
+    pass
+
 
 if __name__ == '__main__':
+    os.environ['OUTPUT_PATH'] = "out.txt"
+
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
 
     n = int(input())
