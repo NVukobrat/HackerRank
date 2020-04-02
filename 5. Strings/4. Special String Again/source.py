@@ -10,6 +10,33 @@ import sys
 # Complete the substrCount function below.
 def substrCount(n, s):
     # II attempt
+
+    # Repetition pairs
+    rep_list = []
+    count = 0
+    cur_ptr = None
+    for i in range(n):
+        if s[i] == cur_ptr:
+            count += 1
+        else:
+            if cur_ptr is not None:
+                rep_list.append((cur_ptr, count))
+            cur_ptr = s[i]
+            count = 1
+    rep_list.append((cur_ptr, count))
+
+    # Combination number of same characters
+    count = 0
+    for i in rep_list:
+        count += (i[1] * (i[1] + 1)) // 2
+
+    # Special char case
+    for i in range(1, len(rep_list) - 1):
+        if (rep_list[i - 1][0] == rep_list[i + 1][0]) and (rep_list[i][1] == 1):
+            count += min(rep_list[i - 1][1], rep_list[i + 1][1])
+
+    return count
+
     # I attempt
     sub_num = n
     # Loop in chunks
