@@ -1,4 +1,24 @@
 def child_len(first, second):
+    first_clear = ""
+    second_cpy = (second + '.')[:-1]
+    second_i = []
+    for i in range(len(first)):
+        for j in range(len(second_cpy)):
+            if first[i] is second_cpy[j]:
+                first_clear += first[i]
+                second_i.append(j)
+                second_cpy = second_cpy[:j] + "-" + second_cpy[(j + 1):]
+                break
+
+    second_clear = ""
+    second_i.sort()
+    for i in second_i:
+        second_clear += second[i]
+
+    print()
+
+
+def child_len_1_attempt(first, second):
     first_map = {}
     second_map = {}
 
