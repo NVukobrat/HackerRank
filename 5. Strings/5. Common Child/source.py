@@ -1,4 +1,27 @@
 def child_len(first, second):
+    """
+    Dynamic Programming approach.
+    """
+    size = len(first)
+    matrix = [[0] * (size + 1) for i in range(size + 1)]
+    for i in range(1, size + 1):
+        for j in range(1, size + 1):
+            if first[i - 1] is not second[j - 1]:
+                matrix[i][j] = max(matrix[i - 1][j], matrix[i][j - 1])
+            else:
+                matrix[i][j] = (matrix[i - 1][j - 1]) + 1
+
+    print(matrix[i][j])
+
+if __name__ == '__main__':
+    first = input()
+    second = input()
+
+    child_len(first, second)
+
+
+
+def child_len_2_attempt(first, second):
     first_clear = ""
     second_cpy = (second + '.')[:-1]
     second_i = []
@@ -15,7 +38,22 @@ def child_len(first, second):
     for i in second_i:
         second_clear += second[i]
 
-    print()
+    first_len = determine_child_len(first_clear, second_clear)
+    second_len = determine_child_len(second_clear, first_clear)
+
+    print(max(first_len, second_len))
+
+
+def determine_child_len(first, second):
+    offset = 0
+    child_len = 0
+    for i in range(len(first)):
+        for j in range(offset, len(second)):
+            if first[i] is second[j]:
+                child_len += 1
+                offset = j + 1
+
+    return child_len
 
 
 def child_len_1_attempt(first, second):
