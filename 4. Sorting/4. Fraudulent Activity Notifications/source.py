@@ -1,58 +1,66 @@
 #!/bin/python3
 
-import math
 import os
-import random
-import re
-import sys
-import bisect
+from bisect import bisect_left, insort_left
 
 
 # Complete the activityNotifications function below.
-def activityNotifications(expenditure, d):
-    # ### III attempt ###
-    end = d
+def activityNotifications(d, n, expenditure):
+    # ### IV attempt ###
     notification = 0
-    sub_exp = expenditure[:end]
+    list_d = sorted(expenditure[:d])
 
-    # Position map
-    pos_map = []
-    for i in range(len(sub_exp)):
-        pos_map.append(i)
-
-    # First sort (Schwartzian transform)
-    sub_exp, pos_map = zip(*sorted(zip(sub_exp, pos_map)))
-    sub_exp, pos_map = list(sub_exp), list(pos_map)
-
-    # Odd or Even
-    even = True if len(sub_exp) % 2 == 0 else False
-
-    while end < len(expenditure):
-        # Median
-        if even:
-            median = (len(sub_exp) - 1) / 2
-            median = (sub_exp[math.ceil(median)] + sub_exp[math.floor(median)]) / 2
-        else:
-            median = sub_exp[len(sub_exp) // 2]
-
-        # Notification
-        next_elem = expenditure[end]
-        if next_elem >= (2 * median):
+    for i in range(d, n):
+        if expenditure[i] >= 2 * median(list_d):
             notification += 1
+        del list_d[bisect_left(list_d, expenditure[i - d])]
+        insort_left(list_d, expenditure[i])
 
-        # Pop
-        # sub_exp.remove(expenditure[end - d])
-        sub_exp.pop(pos_map[0])
-        pos_map.pop(0)
+    print(notification)
 
-        # Add (Insertion sort)
-        index = bisect.bisect(sub_exp, next_elem)
-        sub_exp.insert(index, next_elem)
-        pos_map.append(index)
-
-        end += 1
-
-    return notification
+    # ### III attempt ###
+    # end = d
+    # notification = 0
+    # sub_exp = expenditure[:end]
+    #
+    # # Position map
+    # pos_map = []
+    # for i in range(len(sub_exp)):
+    #     pos_map.append(i)
+    #
+    # # First sort (Schwartzian transform)
+    # sub_exp, pos_map = zip(*sorted(zip(sub_exp, pos_map)))
+    # sub_exp, pos_map = list(sub_exp), list(pos_map)
+    #
+    # # Odd or Even
+    # even = True if len(sub_exp) % 2 == 0 else False
+    #
+    # while end < len(expenditure):
+    #     # Median
+    #     if even:
+    #         median = (len(sub_exp) - 1) / 2
+    #         median = (sub_exp[math.ceil(median)] + sub_exp[math.floor(median)]) / 2
+    #     else:
+    #         median = sub_exp[len(sub_exp) // 2]
+    #
+    #     # Notification
+    #     next_elem = expenditure[end]
+    #     if next_elem >= (2 * median):
+    #         notification += 1
+    #
+    #     # Pop
+    #     # sub_exp.remove(expenditure[end - d])
+    #     sub_exp.pop(pos_map[0])
+    #     pos_map.pop(0)
+    #
+    #     # Add (Insertion sort)
+    #     index = bisect.bisect(sub_exp, next_elem)
+    #     sub_exp.insert(index, next_elem)
+    #     pos_map.append(index)
+    #
+    #     end += 1
+    #
+    # return notification
 
     # ### II attempt ###
     # end = d
@@ -124,21 +132,11 @@ def activityNotifications(expenditure, d):
     # return notification
 
 
+def median(list_d):
+    return list_d[d // 2] if d % 2 == 1 else ((list_d[d // 2] + list_d[d // 2 - 1]) / 2)
+
+
 if __name__ == '__main__':
-    os.environ['OUTPUT_PATH'] = "out.txt"
-
-    fptr = open(os.environ['OUTPUT_PATH'], 'w')
-
-    nd = input().split()
-
-    n = int(nd[0])
-
-    d = int(nd[1])
-
-    expenditure = list(map(int, input().rstrip().split()))
-
-    result = activityNotifications(expenditure, d)
-
-    fptr.write(str(result) + '\n')
-
-    fptr.close()
+    n, d = map(int, input().split())
+    expenditure = list(map(int, input().split()))
+    activityNotifications(d, n, expenditure)
