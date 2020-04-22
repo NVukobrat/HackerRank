@@ -12,7 +12,7 @@ def luckBalance(k, contests):
     # Extract columns
     l = [row[0] for row in contests]
     t = [row[1] for row in contests]
-    o = t.count(1)
+    to_lose = t.count(1) - k
 
     # Sort them
     l, t = zip(*sorted(zip(l, t)))
@@ -20,11 +20,11 @@ def luckBalance(k, contests):
     # Calc
     sum = 0
     for i in range(0, len(l)):
-        if t[i] == 1 and (o - k) > 0:
-            k -= 1
+        if t[i] == 1 and to_lose > 0:
+            to_lose -= 1
+            sum -= l[i]
             continue
         sum += l[i]
-    print()
 
     return sum
 
