@@ -9,7 +9,21 @@ import sys
 
 # Complete the getMinimumCost function below.
 def getMinimumCost(k, c):
-    pass
+    sc = sorted(c, reverse=True)
+
+    s = 0
+    counter = 0
+    additional = 0
+    for c in sc:
+        if counter == k:
+            counter = 0
+            additional += 1
+
+        s += (additional + 1) * c
+
+        counter += 1
+
+    return s
 
 
 if __name__ == '__main__':
